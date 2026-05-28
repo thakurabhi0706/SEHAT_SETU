@@ -20,20 +20,20 @@ const doctorSchema = new mongoose.Schema(
 
     age: {
       type: Number,
-      required: true,
+      
     },
 
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
-      required: true,
+      
     },
 
     phone: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+  type: String,
+  unique: true,
+  sparse: true,
+},
 
     email: {
       type: String,
@@ -53,15 +53,16 @@ const doctorSchema = new mongoose.Schema(
     },
 
     doctorId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+  type: String,
+  unique: true,
+  sparse: true,
+},
 
     medicalLicenseNumber: {
       type: String,
-      required: true,
+      
       unique: true,
+      sparse: true
     },
 
     qualifications: [
@@ -78,7 +79,7 @@ const doctorSchema = new mongoose.Schema(
 
     specialization: {
       type: String,
-      required: true,
+      
     },
 
     yearsOfExperience: {
@@ -101,15 +102,32 @@ const doctorSchema = new mongoose.Schema(
       default: "",
     },
 
+    profileCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
     availabilitySlots: [
       {
         day: String,
         startTime: String,
         endTime: String,
       },
+    
+    
     ],
 
-    uploadedDocuments: [documentSchema],
+    uploadedDocuments: [
+  {
+    documentType: String,
+    fileName: String,
+    fileUrl: String,
+    uploadedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+],
 
     verificationStatus: {
       type: String,

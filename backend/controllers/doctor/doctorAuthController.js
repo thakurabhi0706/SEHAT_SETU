@@ -39,10 +39,19 @@ const registerDoctor = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Doctor registered successfully",
-      token: generateToken(doctor._id, "doctor"),
-      doctor,
-    });
+  message: "Doctor registered successfully",
+
+  token: generateToken(doctor._id, "doctor"),
+
+  user: {
+    _id: doctor._id,
+    fullName: doctor.fullName,
+    email: doctor.email,
+    role: "doctor",
+    profileCompleted: doctor.profileCompleted,
+    verificationStatus: doctor.verificationStatus,
+  },
+});
 
   } catch (error) {
     res.status(500).json({
@@ -63,11 +72,11 @@ const loginDoctor = async (req, res) => {
     });
     }
 
-    if (doctor.verificationStatus !== "Approved") {
-    return res.status(403).json({
-        message: "Doctor account is not verified by admin yet",
-    });
-    }
+    // if (doctor.verificationStatus !== "Approved") {
+    // return res.status(403).json({
+    //     message: "Doctor account is not verified by admin yet",
+    // });
+    // }
 
     const isMatch = await bcrypt.compare(password, doctor.password);
 
@@ -78,10 +87,19 @@ const loginDoctor = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "Doctor login successful",
-      token: generateToken(doctor._id, "doctor"),
-      doctor,
-    });
+  message: "Doctor login successful",
+
+  token: generateToken(doctor._id, "doctor"),
+
+  user: {
+    _id: doctor._id,
+    fullName: doctor.fullName,
+    email: doctor.email,
+    role: "doctor",
+    profileCompleted: doctor.profileCompleted,
+    verificationStatus: doctor.verificationStatus,
+  },
+});
 
   } catch (error) {
     res.status(500).json({

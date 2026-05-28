@@ -54,6 +54,9 @@ const updateDoctorProfile = async (req, res) => {
     doctor.uploadedDocuments =
       req.body.uploadedDocuments || doctor.uploadedDocuments;
 
+    doctor.profileCompleted =
+      req.body.profileCompleted ?? doctor.profileCompleted;
+
     const updatedDoctor = await doctor.save();
 
     res.status(200).json({
