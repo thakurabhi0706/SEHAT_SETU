@@ -57,7 +57,7 @@ function DoctorCompleteProfile() {
 
       console.log(response.data);
 
-      navigate("/doctor/dashboard");
+      navigate("/doctor/pending");
 
     } catch (err) {
       setError(

@@ -19,9 +19,13 @@ const createPrescription = async (req, res) => {
       });
     }
 
-    if (appointment.status !== "Completed") {
+    if (
+      appointment.status !== "Confirmed" ||
+      appointment.paymentStatus !== "Paid"
+    ) {
       return res.status(400).json({
-        message: "Prescription can only be created after completed appointment",
+        message:
+          "Prescription can only be created for paid consultations",
       });
     }
 

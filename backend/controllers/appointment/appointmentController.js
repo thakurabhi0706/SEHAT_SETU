@@ -67,7 +67,7 @@ const acceptAppointment = async (req, res) => {
       });
     }
 
-    appointment.status = "Pending";
+    appointment.status = "Confirmed";
     await appointment.save();
 
     res.status(200).json({
@@ -142,21 +142,33 @@ const completeAppointment = async (req, res) => {
   }
 };
 
-const getPatientAppointments = async (req, res) => {
-  try {
-    const appointments = await Appointment.find({
-      patient: req.user._id,
-    })
-      .populate("doctor", "-password")
-      .sort({ createdAt: -1 });
+const getPatientAppointments =
+  async (req, res) => {
 
-    res.status(200).json(appointments);
+    try {
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
+      const appointments =
+        await Appointment.find({
+          patient: req.user._id,
+        })
+          .populate(
+            "doctor",
+            "fullName specialization"
+          )
+          .sort({
+            createdAt: -1,
+          });
+
+      res.status(200).json(
+        appointments
+      );
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
 };
 
 module.exports = {

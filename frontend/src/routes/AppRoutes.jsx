@@ -9,20 +9,35 @@ import LoginPage from "../pages/public/LoginPage";
 import RegisterPage from "../pages/public/RegisterPage";
 import PharmacyLocator from "../pages/public/PharmacyLocator";
 import NotFound from "../pages/public/NotFound";
+import PrescriptionViewer from "../pages/patient/PrescriptionViewer";
 
 /* PATIENT */
 import PatientDashboard from "../pages/patient/Dashboard";
 import FindDoctors from "../pages/patient/FindDoctors";
 import MyAppointments from "../pages/patient/MyAppointments";
+import DoctorDetails from "../pages/patient/DoctorDetails";
+import BookAppointment from "../pages/patient/BookAppointment";
 
 /* DOCTOR */
-import DoctorDashboard from "../pages/doctor/Dashboard";
 import AppointmentRequests from "../pages/doctor/AppointmentRequests";
 import DoctorCompleteProfile from "../pages/doctor/DoctorCompleteProfile";
+import DoctorPendingPage from "../pages/doctor/DoctorPendingPage";
+import DoctorDashboard from "../pages/doctor/DoctorDashboard";
+import DoctorProtectedRoute from "../components/common/DoctorProtectedRoute";
+import DoctorPatients from "../pages/doctor/DoctorPatients";
+import DoctorAvailability from "../pages/doctor/DoctorAvailability";
+import DoctorEarnings from "../pages/doctor/DoctorEarnings";
+import DoctorProfile from "../pages/doctor/DoctorProfile";
+import CreatePrescription from "../pages/doctor/CreatePrescription";
+
+
 
 /* ADMIN */
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdsManagement from "../pages/admin/AdsManagement";
+import PendingDoctors from "../pages/admin/PendingDoctors";
+import AdminProtectedRoute from "../components/common/AdminProtectedRoute";
+
 
 function AppRoutes() {
   return (
@@ -45,6 +60,25 @@ function AppRoutes() {
         />
 
         <Route
+          path="/patient/prescriptions"
+          element={
+            <RoleProtectedRoute allowedRole="patient">
+              <PrescriptionViewer />
+            </RoleProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/patient/doctor/:id"
+          element={
+            <RoleProtectedRoute allowedRole="patient">
+              <DoctorDetails />
+            </RoleProtectedRoute>
+          }
+        />
+
+        <Route
           path="/patient/doctors"
           element={
             <RoleProtectedRoute allowedRole="patient">
@@ -62,13 +96,84 @@ function AppRoutes() {
           }
         />
 
-        {/* DOCTOR */}
         <Route
+            path="/patient/book-appointment/:id"
+            element={
+              <RoleProtectedRoute allowedRole="patient">
+                <BookAppointment />
+              </RoleProtectedRoute>
+            }
+          />
+        
+
+        {/* DOCTOR */}
+        {/* <Route
           path="/doctor/dashboard"
           element={
             <RoleProtectedRoute allowedRole="doctor">
               <DoctorDashboard />
             </RoleProtectedRoute>
+          }
+        /> */}
+
+
+        <Route
+          path="/doctor/prescription/:appointmentId"
+          element={
+            <DoctorProtectedRoute>
+              <CreatePrescription />
+            </DoctorProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/doctor/patients"
+          element={
+            <DoctorProtectedRoute>
+              <DoctorPatients />
+            </DoctorProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/availability"
+          element={
+            <DoctorProtectedRoute>
+              <DoctorAvailability />
+            </DoctorProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/earnings"
+          element={
+            <DoctorProtectedRoute>
+              <DoctorEarnings />
+            </DoctorProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/profile"
+          element={
+            <DoctorProtectedRoute>
+              <DoctorProfile />
+            </DoctorProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/pending"
+          element={<DoctorPendingPage />}
+        />
+
+        <Route
+          path="/doctor/dashboard"
+          element={
+            <DoctorProtectedRoute>
+              <DoctorDashboard />
+            </DoctorProtectedRoute>
           }
         />
 
@@ -102,6 +207,15 @@ function AppRoutes() {
             <RoleProtectedRoute allowedRole="admin">
               <AdsManagement />
             </RoleProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/pending-doctors"
+          element={
+            <AdminProtectedRoute>
+              <PendingDoctors />
+            </AdminProtectedRoute>
           }
         />
 

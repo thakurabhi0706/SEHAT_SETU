@@ -28,4 +28,6 @@ router.put("/reject/:id", protect, doctorOnly, rejectAppointment);
 
 router.put("/complete/:id", protect, doctorOnly, completeAppointment);
 
+
+
 module.exports = router;

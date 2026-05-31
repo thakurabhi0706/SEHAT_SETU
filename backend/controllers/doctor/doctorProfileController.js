@@ -71,6 +71,32 @@ const updateDoctorProfile = async (req, res) => {
   }
 };
 
+const updateAvailability = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.user._id);
+
+    if (!doctor) {
+      return res.status(404).json({
+        message: "Doctor not found",
+      });
+    }
+
+    doctor.availabilitySlots = req.body.availabilitySlots;
+
+    await doctor.save();
+
+    res.status(200).json({
+      message: "Availability updated successfully",
+      availabilitySlots: doctor.availabilitySlots,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const getAllApprovedDoctors = async (req, res) => {
   try {
     const doctors = await Doctor.find({
@@ -102,9 +128,33 @@ const getDoctorsBySpecialization = async (req, res) => {
   }
 };
 
+const getDoctorById = async (req, res) => {
+  try {
+
+    const doctor = await Doctor.findById(
+      req.params.id
+    ).select("-password");
+
+    if (!doctor) {
+      return res.status(404).json({
+        message: "Doctor not found",
+      });
+    }
+
+    res.status(200).json(doctor);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getDoctorProfile,
   updateDoctorProfile,
   getAllApprovedDoctors,
   getDoctorsBySpecialization,
+  updateAvailability,
+  getDoctorById,
 };

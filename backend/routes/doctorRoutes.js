@@ -11,18 +11,29 @@ const {
   getDoctorProfile,
   updateDoctorProfile,
   getAllApprovedDoctors,
-  getDoctorsBySpecialization
+  updateAvailability,
+  getDoctorsBySpecialization,
+  getDoctorById,
 } = require("../controllers/doctor/doctorProfileController");
 
 const { protect, doctorOnly } = require("../middleware/authMiddleware");
 
+
 router.post("/register", registerDoctor);
 router.post("/login", loginDoctor);
-
-router.get("/", getAllApprovedDoctors);
-router.get("/specialization/:specialization", getDoctorsBySpecialization);
 
 router.get("/profile", protect, doctorOnly, getDoctorProfile);
 router.put("/profile", protect, doctorOnly, updateDoctorProfile);
 
+router.put(
+  "/availability",
+  protect,
+  doctorOnly,
+  updateAvailability
+);
+
+
+router.get("/", getAllApprovedDoctors);
+router.get("/specialization/:specialization", getDoctorsBySpecialization);
+router.get("/:id", getDoctorById);
 module.exports = router;

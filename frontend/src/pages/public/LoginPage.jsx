@@ -51,8 +51,15 @@ function LoginPage() {
       response = await loginAdmin(formData);
     }
 
-    dispatch(loginSuccess(response));
-
+    dispatch(
+      loginSuccess({
+        ...response,
+        user: {
+          ...response.user,
+          role,
+        },
+      })
+    );
     const user = response.user;
 
     // PATIENT
@@ -62,13 +69,13 @@ function LoginPage() {
 
     // DOCTOR
     else if (role === "doctor") {
-      
-      // IF PROFILE NOT COMPLETED
+
       if (!user.profileCompleted) {
         navigate("/doctor/complete-profile");
       }
-
-      // IF PROFILE COMPLETED
+      else if (user.verificationStatus !== "Approved") {
+        navigate("/doctor/pending");
+      }
       else {
         navigate("/doctor/dashboard");
       }

@@ -24,8 +24,15 @@ const loginAdmin = async (req, res) => {
 
     res.status(200).json({
       message: "Admin login successful",
+
       token: generateToken(admin._id, "admin"),
-      admin,
+
+      user: {
+        _id: admin._id,
+        fullName: admin.fullName,
+        email: admin.email,
+        role: "admin",
+      },
     });
 
   } catch (error) {
