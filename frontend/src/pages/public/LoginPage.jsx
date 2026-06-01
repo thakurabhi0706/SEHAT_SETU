@@ -45,21 +45,51 @@ function LoginPage() {
 
     if (role === "patient") {
       response = await loginPatient(formData);
+      
     } else if (role === "doctor") {
       response = await loginDoctor(formData);
     } else {
       response = await loginAdmin(formData);
     }
 
-    dispatch(
-      loginSuccess({
-        ...response,
-        user: {
-          ...response.user,
-          role,
-        },
-      })
-    );
+    if (role === "patient") {
+
+      dispatch(
+        loginSuccess({
+          token: response.token,
+          user: {
+            ...response.patient,
+            role: "patient",
+          },
+        })
+      );
+
+    }
+    else if (role === "doctor") {
+
+      dispatch(
+        loginSuccess({
+          token: response.token,
+          user: {
+            ...response.user,
+            role: "doctor",
+          },
+        })
+      );
+
+    }
+    else {
+
+      dispatch(
+        loginSuccess({
+          token: response.token,
+          user: {
+            role: "admin",
+          },
+        })
+      );
+
+    }
     const user = response.user;
 
     // PATIENT

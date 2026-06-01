@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   createPaymentOrder,
   verifyPayment,
@@ -8,7 +10,7 @@ import {
 } from "../../services/appointmentService";
 
 function MyAppointments() {
-
+  const navigate = useNavigate();
   const handlePayment = async (
       appointment
     ) => {
@@ -169,17 +171,17 @@ function MyAppointments() {
                   </div>
 
                   <span
-                    className="
-                      px-4
-                      py-2
-                      rounded-full
-                      bg-yellow-100
-                      text-yellow-700
-                    "
+                    className={`px-4 py-2 rounded-full font-semibold ${
+                      appointment.status === "Completed"
+                        ? "bg-green-100 text-green-700"
+                        : appointment.status === "Confirmed"
+                        ? "bg-blue-100 text-blue-700"
+                        : appointment.status === "Cancelled"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
                   >
-                    {
-                      appointment.status
-                    }
+                    {appointment.status}
                   </span>
 
                 </div>
@@ -267,6 +269,7 @@ function MyAppointments() {
 {/* JOIN MEETING */}
 
 {appointment.paymentStatus === "Paid" &&
+ appointment.status !== "Completed" &&
  appointment.meetingLink && (
 
   <a
@@ -286,6 +289,27 @@ function MyAppointments() {
   >
     Join Consultation
   </a>
+
+)}
+
+{appointment.status === "Completed" && (
+
+  <button
+    onClick={() =>
+      navigate("/patient/prescriptions")
+    }
+    className="
+      mt-6
+      bg-[#8c3b24]
+      text-white
+      px-6
+      py-3
+      rounded-xl
+      font-semibold
+    "
+  >
+    View Prescription
+  </button>
 
 )}
               </div>

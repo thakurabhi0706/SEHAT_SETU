@@ -1,65 +1,149 @@
-import { Link } from "react-router-dom";
 import {
-  Calendar,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
+
+import {
+  LayoutDashboard,
+  Home,
   UserRoundSearch,
-  FileText,
+  CalendarDays,
+  Calendar,
   Pill,
+  FileText,
+  LogOut,
 } from "lucide-react";
+
+import { useDispatch,useSelector } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
+
+
+
+
+
 
 import ruralImage from "../../assets/images/rural-healthcare1.jpg";
 
+
+
 function Dashboard() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  const { user } = useSelector(
+    (state) => state.auth
+  );
+
   const patientName =
-    JSON.parse(localStorage.getItem("user"))
-      ?.fullName || "Patient";
+    user?.fullName || "Patient";
 
   return (
     <div className="min-h-screen bg-[#f7f4ef] flex">
 
       {/* SIDEBAR */}
-      <div className="w-72 bg-[#8c3b24] text-white p-8">
+      <aside className="w-72 bg-[#8c3b24] text-white p-8 flex flex-col">
 
-        <h1 className="text-5xl font-bold">
-          Sehat Setu
-        </h1>
+        <div>
+          <h1 className="text-3xl font-bold">
+            Sehat Setu
+          </h1>
 
-        <p className="mt-2 text-white/80">
-          Patient Portal
-        </p>
-
-        <div className="mt-16 space-y-6">
-
-          <Link
-            to="/patient/dashboard"
-            className="block"
-          >
-            Dashboard
-          </Link>
-
-          <Link
-            to="/patient/doctors"
-            className="block"
-          >
-            Find Doctors
-          </Link>
-
-          <Link
-            to="/patient/appointments"
-            className="block"
-          >
-            My Appointments
-          </Link>
-
-          <Link
-            to="/patient/prescriptions"
-            className="block"
-          >
-            Prescriptions
-          </Link>
-
+          <p className="text-orange-100 mt-2 text-sm">
+            Patient Portal
+          </p>
         </div>
 
-      </div>
+        <nav className="mt-12 flex-1 space-y-3">
+
+          <SidebarItem
+            icon={Home}
+            label="Home"
+            active={
+              location.pathname === "/"
+            }
+            onClick={() =>
+              navigate("/")
+            }
+          />
+
+          <SidebarItem
+            icon={LayoutDashboard}
+            label="Dashboard"
+            active={
+              location.pathname ===
+              "/patient/dashboard"
+            }
+            onClick={() =>
+              navigate("/patient/dashboard")
+            }
+          />
+
+          <SidebarItem
+            icon={UserRoundSearch}
+            label="Find Doctors"
+            active={
+              location.pathname ===
+              "/patient/doctors"
+            }
+            onClick={() =>
+              navigate("/patient/doctors")
+            }
+          />
+
+          <SidebarItem
+            icon={CalendarDays}
+            label="My Appointments"
+            active={
+              location.pathname ===
+              "/patient/appointments"
+            }
+            onClick={() =>
+              navigate("/patient/appointments")
+            }
+          />
+
+          <SidebarItem
+            icon={Pill}
+            label="Prescriptions"
+            active={
+              location.pathname ===
+              "/patient/prescriptions"
+            }
+            onClick={() =>
+              navigate(
+                "/patient/prescriptions"
+              )
+            }
+          />
+
+        </nav>
+
+        <button
+          onClick={handleLogout}
+          className="
+            flex
+            items-center
+            gap-3
+            text-orange-100
+            hover:text-white
+            transition
+          "
+        >
+          <LogOut size={20} />
+          Logout
+        </button>
+
+      </aside>
 
       {/* MAIN CONTENT */}
       <div className="flex-1 p-8">
@@ -243,4 +327,26 @@ function Dashboard() {
   );
 }
 
+
+
+  function SidebarItem({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition ${
+        active
+          ? "bg-white text-[#8c3b24] font-semibold"
+          : "text-orange-100 hover:bg-white/10"
+      }`}
+    >
+      <Icon size={22} />
+      {label}
+    </button>
+  );
+}
 export default Dashboard;
