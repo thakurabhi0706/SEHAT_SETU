@@ -5,6 +5,7 @@ const {
   uploadMedicalReport,
   getPatientReports,
   getReportsByPatient,
+  deleteMedicalReport,
 } = require("../controllers/medicalReport/medicalReportController");
 
 const {
@@ -13,7 +14,16 @@ const {
   doctorOnly,
 } = require("../middleware/authMiddleware");
 
-router.post("/upload", protect, patientOnly, uploadMedicalReport);
+const upload =
+  require("../middleware/uploadMiddleware");
+
+router.post(
+  "/upload",
+  protect,
+  patientOnly,
+  upload.single("report"),
+  uploadMedicalReport
+);
 
 router.get("/patient", protect, patientOnly, getPatientReports);
 
@@ -23,5 +33,14 @@ router.get(
   doctorOnly,
   getReportsByPatient
 );
+
+router.delete(
+  "/:id",
+  protect,
+  patientOnly,
+  deleteMedicalReport
+);
+
+
 
 module.exports = router;

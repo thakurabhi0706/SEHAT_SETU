@@ -7,6 +7,7 @@ import {
   Clock3,
   UserCircle,
   LogOut,
+  Home,
 } from "lucide-react";
 
 import { useSelector } from "react-redux";
@@ -70,6 +71,17 @@ function DoctorDashboard() {
 
         {/* MENU */}
         <nav className="mt-12 flex-1 space-y-3">
+
+          <SidebarItem
+            icon={Home}
+            label="Home"
+            active={
+              location.pathname === "/"
+            }
+            onClick={() =>
+              navigate("/")
+            }
+          />
           
           <SidebarItem
             icon={LayoutDashboard}
@@ -79,6 +91,17 @@ function DoctorDashboard() {
             }
             onClick={() =>
               navigate("/doctor/dashboard")
+            }
+          />
+
+          <SidebarItem
+            icon={UserCircle}
+            label="Profile"
+            active={
+              location.pathname === "/doctor/profile"
+            }
+            onClick={() =>
+              navigate("/doctor/profile")
             }
           />
 
@@ -126,16 +149,7 @@ function DoctorDashboard() {
             }
           />
 
-          <SidebarItem
-            icon={UserCircle}
-            label="Profile"
-            active={
-              location.pathname === "/doctor/profile"
-            }
-            onClick={() =>
-              navigate("/doctor/profile")
-            }
-          />`
+          `
         </nav>
 
         {/* LOGOUT */}

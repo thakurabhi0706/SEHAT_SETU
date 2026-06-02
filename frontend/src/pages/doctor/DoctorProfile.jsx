@@ -98,6 +98,13 @@ function DoctorProfile() {
             <h2 className="font-bold text-xl mb-4">
               Verification Status
             </h2>
+            <span className="
+              px-4 py-2 rounded-full
+              bg-green-100
+              text-green-700
+            ">
+              {doctor.verificationStatus}
+            </span>
 
             <div className="mt-8">
               <h2 className="font-bold text-xl mb-4">
@@ -146,13 +153,7 @@ function DoctorProfile() {
               </div>
             </div>
 
-            <span className="
-              px-4 py-2 rounded-full
-              bg-green-100
-              text-green-700
-            ">
-              {doctor.verificationStatus}
-            </span>
+            
           </div>
 
         </div>

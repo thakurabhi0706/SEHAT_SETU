@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import BackButton from "../../components/common/BackButton";
 import {
   getPendingDoctors,
   approveDoctor,
@@ -62,6 +62,7 @@ const PendingDoctors = () => {
       <h1 className="text-4xl font-bold text-[#1f2937] mb-8">
         Pending Doctor Verifications
       </h1>
+      <BackButton/>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {doctors.map((doctor) => (

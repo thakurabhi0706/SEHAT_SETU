@@ -14,16 +14,11 @@ import {
   Pill,
   FileText,
   LogOut,
+  UserCircle,
 } from "lucide-react";
 
 import { useDispatch,useSelector } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
-
-
-
-
-
-
 import ruralImage from "../../assets/images/rural-healthcare1.jpg";
 
 
@@ -85,6 +80,18 @@ function Dashboard() {
             }
             onClick={() =>
               navigate("/patient/dashboard")
+            }
+          />
+          
+          <SidebarItem
+            icon={UserCircle}
+            label="My Profile"
+            active={
+              location.pathname ===
+              "/patient/profile"
+            }
+            onClick={() =>
+              navigate("/patient/profile")
             }
           />
 

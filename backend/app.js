@@ -22,10 +22,13 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
-app.use("/api/reports", medicalReportRoutes);
+// app.use("/api/reports", medicalReportRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/ads", advertisementRoutes);
-
+app.use(
+  "/api/medical-reports",
+  medicalReportRoutes
+);
 
 app.get("/", (req, res) => {
   res.send("SEHAT SETU Backend Running");

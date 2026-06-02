@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Search, Stethoscope, MapPin } from "lucide-react";
+import { Search, Stethoscope, MapPin,  ArrowLeft } from "lucide-react";
 import { getAllDoctors } from "../../services/patientDoctorService";
 
 import {
   useNavigate,
   Link,
+
 } from "react-router-dom";
+
+
 
 
 function FindDoctors() {
@@ -71,6 +74,9 @@ function FindDoctors() {
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
 
+
+          
+
           <h1 className="text-5xl font-bold">
             Find Trusted Doctors
           </h1>
@@ -82,6 +88,7 @@ function FindDoctors() {
 
         </div>
       </div>
+
 
       {/* SEARCH */}
       <div className="max-w-7xl mx-auto px-6 mt-10">

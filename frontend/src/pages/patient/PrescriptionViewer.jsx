@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   getPatientPrescriptions,
 } from "../../services/prescriptionService";
 
 function PrescriptionViewer() {
-
+  const navigate = useNavigate();
   const [prescriptions, setPrescriptions] =
     useState([]);
 
@@ -65,6 +67,23 @@ function PrescriptionViewer() {
         <p className="text-gray-500 mb-10">
           View prescriptions issued by doctors
         </p>
+
+        <button
+            onClick={() => navigate(-1)}
+            className="
+              flex
+              items-center
+              gap-2
+              mb-6
+              text-[#8c3b24]
+              font-semibold
+              hover:text-[#71301d]
+              transition
+            "
+          >
+            <ArrowLeft size={20} />
+            Go Back
+          </button>
 
         {prescriptions.length === 0 && (
 

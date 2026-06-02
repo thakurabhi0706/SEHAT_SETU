@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-
-
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 
@@ -124,7 +122,7 @@ function Navbar() {
             Pharmacy Locator
           </Link>
 
-          <Link
+          {/* <Link
             to="/admin/dashboard"
             className="
               hover:text-[#8c3b24]
@@ -132,7 +130,7 @@ function Navbar() {
             "
           >
             Admin
-          </Link>
+          </Link> */}
         </div>
 
         {/* RIGHT */}
@@ -241,7 +239,7 @@ function Navbar() {
                       onClick={() => {
                         navigate(
                           user?.role === "patient"
-                            ? "/patient/dashboard"
+                            ? "/patient/profile"
                             : "/doctor/profile"
                         );
 

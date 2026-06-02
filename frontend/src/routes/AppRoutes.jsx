@@ -17,6 +17,8 @@ import FindDoctors from "../pages/patient/FindDoctors";
 import MyAppointments from "../pages/patient/MyAppointments";
 import DoctorDetails from "../pages/patient/DoctorDetails";
 import BookAppointment from "../pages/patient/BookAppointment";
+import PatientProfile from "../pages/patient/PatientProfile";
+
 
 /* DOCTOR */
 import AppointmentRequests from "../pages/doctor/AppointmentRequests";
@@ -55,6 +57,15 @@ function AppRoutes() {
           element={
             <RoleProtectedRoute allowedRole="patient">
               <PatientDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/patient/profile"
+          element={
+            <RoleProtectedRoute allowedRole="patient">
+              <PatientProfile />
             </RoleProtectedRoute>
           }
         />
