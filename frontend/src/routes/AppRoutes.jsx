@@ -31,6 +31,8 @@ import DoctorAvailability from "../pages/doctor/DoctorAvailability";
 import DoctorEarnings from "../pages/doctor/DoctorEarnings";
 import DoctorProfile from "../pages/doctor/DoctorProfile";
 import CreatePrescription from "../pages/doctor/CreatePrescription";
+import DoctorReports from "../pages/doctor/DoctorReports";
+
 
 
 
@@ -126,7 +128,10 @@ function AppRoutes() {
             </RoleProtectedRoute>
           }
         /> */}
-
+        <Route
+          path="/doctor/reports/:patientId"
+          element={<DoctorReports />}
+        />
 
         <Route
           path="/doctor/prescription/:appointmentId"

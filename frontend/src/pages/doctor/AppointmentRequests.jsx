@@ -377,6 +377,26 @@ function AppointmentRequests() {
                     <button
                       onClick={() =>
                         navigate(
+                          `/doctor/reports/${appointment.patient._id}`
+                        )
+                      }
+                      className="
+                        bg-purple-600
+                        text-white
+                        px-6
+                        py-3
+                        rounded-xl
+                        font-semibold
+                      "
+                    >
+                      View Reports
+                    </button>
+
+
+
+                    <button
+                      onClick={() =>
+                        navigate(
                           `/doctor/prescription/${appointment._id}`
                         )
                       }

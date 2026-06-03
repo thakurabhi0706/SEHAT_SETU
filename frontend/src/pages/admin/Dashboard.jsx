@@ -1,6 +1,25 @@
+import { useEffect, useState } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  LineChart,
+  Line,
+  Legend,
+  RadialBarChart,
+  RadialBar,
+} from "recharts";
 import {
   LayoutDashboard,
   UserCheck,
+  Home,
   Building2,
   Megaphone,
   CalendarDays,
@@ -14,6 +33,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { logout } from "../../features/auth/authSlice";
 
+import { getDashboardStats } from "../../api/adminApi";
+
 function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,28 +45,62 @@ function Dashboard() {
     navigate("/login");
   };
 
-  const stats = [
-    {
-      title: "Pending Doctors",
-      value: "--",
-      icon: UserCheck,
-    },
-    {
-      title: "Pending Pharmacies",
-      value: "--",
-      icon: Building2,
-    },
-    {
-      title: "Advertisements",
-      value: "--",
-      icon: Megaphone,
-    },
-    {
-      title: "Appointments",
-      value: "--",
-      icon: CalendarDays,
-    },
-  ];
+  const [stats, setStats] =
+      useState(null);
+
+    useEffect(() => {
+      const fetchStats = async () => {
+        try {
+          const data =
+            await getDashboardStats();
+
+          setStats(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchStats();
+    }, []);
+
+    if (!stats) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      );
+    }
+
+  const appointmentData =
+  Object.entries(
+    stats.appointmentStats
+  ).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
+const consultationData =
+  Object.entries(
+    stats.consultationStats
+  ).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
+const specializationData =
+  Object.entries(
+    stats.specializationStats
+  ).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
+const COLORS = [
+  "#8B4513",
+  "#C66B3D",
+  "#D7BFAE",
+  "#EADFD5",
+];
 
   return (
     <div className="min-h-screen bg-[#f7f4ef] flex">
@@ -67,7 +122,16 @@ function Dashboard() {
         </div>
 
         <nav className="mt-12 flex-1 space-y-3">
-
+          <SidebarItem
+                      icon={Home}
+                      label="Home"
+                      active={
+                        location.pathname === "/"
+                      }
+                      onClick={() =>
+                        navigate("/")
+                      }
+          />
           <SidebarItem
             icon={LayoutDashboard}
             label="Dashboard"
@@ -169,94 +233,234 @@ function Dashboard() {
 
         {/* STATS */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+        {/* STATS */}
 
-          {stats.map((item) => {
-            const Icon = item.icon;
+          <div className="grid md:grid-cols-4 gap-6 mt-8">
 
-            return (
-              <div
-                key={item.title}
-                className="bg-white rounded-3xl p-6 shadow-md border border-[#efe5db]"
+            <StatCard
+              title="Patients"
+              value={stats.totalPatients}
+            />
+
+            <StatCard
+              title="Doctors"
+              value={stats.totalDoctors}
+            />
+
+            <StatCard
+              title="Pending Doctors"
+              value={stats.pendingDoctors}
+            />
+
+            <StatCard
+              title="Revenue"
+              value={`₹${stats.totalRevenue}`}
+            />
+
+          </div>
+
+          {/* ANALYTICS */}
+
+          <div className="grid lg:grid-cols-3 gap-6 mt-10">
+
+            {/* Appointment Status */}
+
+            <div className="bg-white p-5 rounded-3xl shadow-md">
+
+              <h2 className="text-xl font-bold mb-4">
+                Appointment Status
+              </h2>
+
+              <ResponsiveContainer
+                width="100%"
+                height={280}
               >
-                <div className="flex items-center justify-between">
+                <PieChart>
 
-                  <div>
-                    <p className="text-gray-500">
-                      {item.title}
-                    </p>
+                  <Pie
+                    data={appointmentData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={90}
+                  >
+                    <Tooltip />
+                    <Legend />
+                    {appointmentData.map(
+                      (_, index) => (
+                        <Cell
+                          key={index}
+                          fill={
+                            COLORS[
+                              index %
+                              COLORS.length
+                            ]
+                          }
+                        />
+                      )
+                    )}
+                  </Pie>
 
-                    <h2 className="text-3xl font-bold mt-3 text-gray-900">
-                      {item.value}
-                    </h2>
-                  </div>
+                  <Tooltip />
 
-                  <div className="bg-[#f5e6dc] p-4 rounded-2xl">
-                    <Icon className="text-[#8c3b24]" />
-                  </div>
+                </PieChart>
+              </ResponsiveContainer>
+
+            </div>
+
+            {/* Doctor Specializations */}
+
+            <div className="bg-white p-5 rounded-3xl shadow-md">
+
+              <h2 className="text-xl font-bold mb-4">
+                Doctor Specializations
+              </h2>
+
+              <ResponsiveContainer
+                width="100%"
+                height={280}
+              >
+                <BarChart
+  layout="vertical"
+  data={specializationData}
+>
+  <CartesianGrid strokeDasharray="3 3" />
+
+  <XAxis type="number" />
+
+  <YAxis
+    type="category"
+    dataKey="name"
+    width={100}
+  />
+
+  <Tooltip />
+
+  <Bar
+    dataKey="value"
+    fill="#8c4a2f"
+    radius={[0, 10, 10, 0]}
+  />
+</BarChart>
+              </ResponsiveContainer>
+
+            </div>
+
+            {/* Monthly Revenue */}
+
+            <div className="bg-white p-5 rounded-3xl shadow-md">
+
+              <h2 className="text-xl font-bold mb-4">
+                Monthly Revenue Trend
+              </h2>
+
+              <ResponsiveContainer
+                width="100%"
+                height={280}
+              >
+                <LineChart
+                  data={revenueData}
+                >
+
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                  />
+
+                  <XAxis dataKey="month" />
+
+                  <YAxis />
+
+                  <Tooltip />
+
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#8c4a2f"
+                    strokeWidth={3}
+                  />
+
+                </LineChart>
+              </ResponsiveContainer>
+
+            </div>
+
+          </div>
+
+          {/* BOTTOM SECTION */}
+
+          <div className="grid lg:grid-cols-2 gap-6 mt-10">
+
+            {/* Admin Activity */}
+
+            <div className="bg-white rounded-3xl p-8 shadow-md">
+
+              <h2 className="text-2xl font-bold">
+                Admin Activity
+              </h2>
+
+              <div className="mt-6 text-gray-500">
+
+                Activity logs will appear here
+                once backend tracking is added.
+
+              </div>
+
+            </div>
+
+            {/* Quick Summary */}
+
+            <div className="bg-white rounded-3xl p-8 shadow-md">
+
+              <h2 className="text-2xl font-bold">
+                Platform Summary
+              </h2>
+
+              <div className="space-y-5 mt-6">
+
+                <div className="flex justify-between">
+
+                  <span>Total Patients</span>
+
+                  <span className="font-semibold">
+                    {stats.totalPatients}
+                  </span>
 
                 </div>
+
+                <div className="flex justify-between">
+
+                  <span>Total Doctors</span>
+
+                  <span className="font-semibold">
+                    {stats.totalDoctors}
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span>Pending Doctors</span>
+
+                  <span className="font-semibold">
+                    {stats.pendingDoctors}
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span>Total Revenue</span>
+
+                  <span className="font-semibold">
+                    ₹{stats.totalRevenue}
+                  </span>
+
+                </div>
+
               </div>
-            );
-          })}
-
-        </div>
-
-        {/* CONTENT */}
-
-        <div className="grid lg:grid-cols-3 gap-8 mt-10">
-
-          {/* VERIFICATION QUEUE */}
-
-          <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-md border border-[#efe5db]">
-
-            <h2 className="text-2xl font-bold text-gray-900">
-              Verification Queue
-            </h2>
-
-            <div className="mt-6 space-y-4">
-
-              <VerificationCard
-                title="Doctor Registration"
-                subtitle="Cardiology Specialist"
-                status="Pending Review"
-              />
-
-              <VerificationCard
-                title="Doctor Registration"
-                subtitle="Dermatology Specialist"
-                status="Pending Review"
-              />
-
-              <VerificationCard
-                title="Pharmacy Registration"
-                subtitle="Community Pharmacy"
-                status="Pending Review"
-              />
-
-            </div>
-          </div>
-
-          {/* ACTIVITY */}
-
-          <div className="bg-white rounded-3xl p-8 shadow-md border border-[#efe5db]">
-
-            <h2 className="text-2xl font-bold text-gray-900">
-              Admin Activity
-            </h2>
-
-            <div className="mt-6 space-y-5">
-
-              <ActivityItem text="Doctor approved" />
-              <ActivityItem text="Doctor rejected" />
-              <ActivityItem text="New pharmacy registration" />
-              <ActivityItem text="Advertisement published" />
 
             </div>
 
           </div>
-
-        </div>
 
       </main>
 
@@ -318,5 +522,30 @@ function ActivityItem({ text }) {
     </div>
   );
 }
+
+function StatCard({
+  title,
+  value,
+}) {
+  return (
+    <div className="bg-white rounded-3xl p-8 shadow-md border border-[#efe5db]">
+      <p className="text-gray-500 text-lg">
+        {title}
+      </p>
+
+      <h2 className="text-4xl font-bold text-[#111827] mt-4">
+        {value}
+      </h2>
+    </div>
+  );
+}
+
+const revenueData = [
+  { month: "Jan", revenue: 5000 },
+  { month: "Feb", revenue: 12000 },
+  { month: "Mar", revenue: 18000 },
+  { month: "Apr", revenue: 15000 },
+  { month: "May", revenue: 25000 },
+];
 
 export default Dashboard;

@@ -27,6 +27,26 @@ export const uploadReport =
 };
 
 
+export const getReportsByPatient =
+  async (patientId) => {
+
+    const token =
+      localStorage.getItem("token");
+
+    const response =
+      await axios.get(
+        `${API_URL}/doctor/${patientId}`,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+    return response.data;
+};
+
 
 
 export const deleteReport = async (id) => {

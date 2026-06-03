@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  getDashboardStats,
+} = require(
+  "../controllers/admin/adminAnalyticsController"
+);
+
+const {
   getAdminProfile,
 } = require("../controllers/admin/adminProfileController");
 
@@ -67,6 +73,14 @@ router.put(
   adminOnly,
   rejectPharmacy
 );
+
+router.get(
+  "/dashboard-stats",
+  protect,
+  adminOnly,
+  getDashboardStats
+);
+
 
 router.get("/profile", protect, adminOnly, getAdminProfile);
 
