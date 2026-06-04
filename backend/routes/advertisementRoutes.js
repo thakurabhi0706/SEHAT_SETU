@@ -4,6 +4,9 @@ const router = express.Router();
 const {
   createAdvertisement,
   getActiveAdvertisements,
+  getAllAdvertisements,
+  toggleAdvertisement,
+  deleteAdvertisement,
 } = require("../controllers/admin/advertisementController");
 
 const {
@@ -16,6 +19,28 @@ router.post(
   protect,
   adminOnly,
   createAdvertisement
+);
+
+
+router.get(
+  "/admin",
+  protect,
+  adminOnly,
+  getAllAdvertisements
+);
+
+router.put(
+  "/toggle/:id",
+  protect,
+  adminOnly,
+  toggleAdvertisement
+);
+
+router.delete(
+  "/:id",
+  protect,
+  adminOnly,
+  deleteAdvertisement
 );
 
 router.get("/", getActiveAdvertisements);

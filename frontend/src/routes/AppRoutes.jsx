@@ -41,6 +41,7 @@ import AdminDashboard from "../pages/admin/Dashboard";
 import AdsManagement from "../pages/admin/AdsManagement";
 import PendingDoctors from "../pages/admin/PendingDoctors";
 import AdminProtectedRoute from "../components/common/AdminProtectedRoute";
+import Advertisements from "../pages/admin/Advertisements";
 
 
 function AppRoutes() {
@@ -224,6 +225,11 @@ function AppRoutes() {
               <AdsManagement />
             </RoleProtectedRoute>
           }
+        />
+
+        <Route
+          path="/admin/advertisements"
+          element={<Advertisements />}
         />
 
         <Route

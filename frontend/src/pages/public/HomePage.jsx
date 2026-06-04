@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import AdvertisementCarousel from "../../components/ads/AdvertisementCarousel";
 import Navbar from "../../components/common/Navbar";
 
 import {
@@ -16,6 +16,7 @@ import heroImage from "../../assets/images/rural-healthcare.jpg";
 import ruralImage1 from "../../assets/images/rural-healthcare1.jpg";
 import ruralImage2 from "../../assets/images/rural-healthcare2.jpg";
 import ruralImage3 from "../../assets/images/rural-healthcare3.jpg";
+import ruralImage4 from "../../assets/images/rural-healthcare4.jpg";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -70,65 +71,64 @@ function HomePage() {
 
       {/* HERO */}
 
-      <section
-        className="relative h-[700px] bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-        }}
-      >
-        <div className="absolute inset-0 bg-[#8c3b24]/55" />
+      <section className="relative h-[750px] overflow-hidden">
 
-        <div className="relative z-10 flex flex-col justify-center items-center text-center h-full text-white px-6">
+          {/* BACKGROUND IMAGE */}
 
-          <h1 className="text-6xl font-bold max-w-5xl leading-tight">
-            Healthcare For Every Village
-          </h1>
+          <img
+            src={heroImage}
+            alt=""
+            className="
+              absolute
+              inset-0
+              w-full
+              h-full
+              object-cover
+              scale-110
+              blur-xl
+            "
+          />
 
-          <p className="mt-6 text-xl max-w-3xl">
-            Connecting rural communities with trusted doctors,
-            digital prescriptions and online consultations.
-          </p>
+          {/* RED OVERLAY */}
 
-          <div className="mt-10 flex gap-4 flex-wrap justify-center">
-            <button
-              onClick={() =>
-                handleProtectedNavigation("/patient/doctors")
-              }
-              className="
-                bg-[#8c3b24]
-                hover:bg-[#73301d]
-                px-8
-                py-4
-                rounded-xl
-                font-semibold
-                transition
-              "
-            >
-              Find Doctors
-            </button>
+          <div
+            className="
+              absolute
+              inset-0
+              bg-[#8c3b24]/60
+            "
+          />
 
-            <button
-              onClick={() =>
-                handleProtectedNavigation("/patient/appointments")
-              }
-              className="
-                border
-                border-white
-                px-8
-                py-4
-                rounded-xl
-                font-semibold
-                hover:bg-white
-                hover:text-[#8c3b24]
-                transition
-              "
-            >
-              Video Consultation
-            </button>
+          {/* CONTENT */}
+
+          <div
+            className="
+              relative
+              z-10
+              h-full
+              flex
+              flex-col
+              items-center
+              text-[#5a2617]
+              pt-10
+              px-6
+            "
+          >
+
+            <h1 className="text-5xl font-bold text-center">
+              Healthcare For Every Village
+            </h1>
+
+           <p className="mt-2 text-lg text-center max-w-3xl">
+              Connecting rural communities with trusted doctors,
+              digital prescriptions and online consultations.
+            </p>
+
+            <AdvertisementCarousel />
+
           </div>
 
-        </div>
-      </section>
+        </section>
 
       {/* STATS */}
 
@@ -357,7 +357,7 @@ function HomePage() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
           <img
-            src={ruralImage3}
+            src={ruralImage4}
             alt=""
             className="rounded-3xl"
           />

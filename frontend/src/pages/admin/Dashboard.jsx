@@ -160,8 +160,8 @@ const COLORS = [
           <SidebarItem
             icon={Megaphone}
             label="Advertisements"
-            active={false}
-            onClick={() => {}}
+            active={location.pathname === "/admin/advertisements"}
+            onClick={() => navigate("/admin/advertisements")}
           />
 
           <SidebarItem
