@@ -17,6 +17,11 @@ export const getAdvertisementsAdmin = async () => {
   return response.data;
 };
 
+export const getActiveAdvertisements = async () => {
+  const response = await api.get("/ads");
+  return response.data;
+};
+
 export const toggleAdvertisement = async (id) => {
   const response = await api.put(
     `/ads/toggle/${id}`

@@ -11,6 +11,7 @@ import PharmacyLocator from "../pages/public/PharmacyLocator";
 import NotFound from "../pages/public/NotFound";
 import PrescriptionViewer from "../pages/patient/PrescriptionViewer";
 
+
 /* PATIENT */
 import PatientDashboard from "../pages/patient/Dashboard";
 import FindDoctors from "../pages/patient/FindDoctors";
@@ -52,7 +53,10 @@ function AppRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/pharmacy-locator" element={<PharmacyLocator />} />
+        <Route
+          path="/pharmacy-locator"
+          element={<PharmacyLocator />}
+        />
 
         {/* PATIENT */}
         <Route
