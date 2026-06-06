@@ -8,6 +8,7 @@ import {
 import {
   getPatientAppointments,
 } from "../../services/appointmentService";
+import BackButton from "../../components/common/BackButton";
 
 function MyAppointments() {
   const navigate = useNavigate();
@@ -119,22 +120,7 @@ function MyAppointments() {
           Track all your consultations
         </p>
 
-        <button
-  onClick={() => navigate(-1)}
-  className="
-    flex
-    items-center
-    gap-2
-    mb-6
-    text-[#8c3b24]
-    font-semibold
-    hover:text-[#71301d]
-    transition
-  "
->
-  <ArrowLeft size={20} />
-  Go Back
-</button>
+        <BackButton />
 
         <div className="space-y-6">
 

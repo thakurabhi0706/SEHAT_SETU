@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDoctorProfile } from "../../services/doctorService";
+import BackButton from "../../components/common/BackButton";
+
 
 function DoctorProfile() {
   const [doctor, setDoctor] = useState(null);
@@ -29,21 +31,12 @@ function DoctorProfile() {
   return (
     <div className="min-h-screen bg-[#f8f5f1] p-10">
       <div className="max-w-6xl mx-auto">
-        <button
-  onClick={() => navigate(-1)}
-  className="
-    flex items-center
-    gap-2
-    mb-6
-    text-[#8c3b24]
-    font-semibold
-  "
->
-  ← Back
-</button>
+        
         <h1 className="text-4xl font-bold text-[#8B4513] mb-8">
           Doctor Profile
         </h1>
+
+        <BackButton />
 
         <div className="bg-white rounded-3xl shadow-md p-8">
 

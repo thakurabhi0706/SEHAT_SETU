@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getPatientPrescriptions,
 } from "../../services/prescriptionService";
+import BackButton from "../../components/common/BackButton";
 
 function PrescriptionViewer() {
   const navigate = useNavigate();
@@ -68,22 +69,7 @@ function PrescriptionViewer() {
           View prescriptions issued by doctors
         </p>
 
-        <button
-            onClick={() => navigate(-1)}
-            className="
-              flex
-              items-center
-              gap-2
-              mb-6
-              text-[#8c3b24]
-              font-semibold
-              hover:text-[#71301d]
-              transition
-            "
-          >
-            <ArrowLeft size={20} />
-            Go Back
-          </button>
+        <BackButton />
 
         {prescriptions.length === 0 && (
 

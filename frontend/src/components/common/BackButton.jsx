@@ -20,7 +20,7 @@ function BackButton() {
       "
     >
       <ArrowLeft size={20} />
-      Go Back
+      Back
     </button>
   );
 }

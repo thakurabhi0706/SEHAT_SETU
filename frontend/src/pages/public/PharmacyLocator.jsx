@@ -94,7 +94,7 @@ function PharmacyLocator() {
           hover:bg-gray-100
         "
       >
-        ← Go Back
+        ← Back
       </Link>
 
       {/* MAP */}

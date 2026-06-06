@@ -1,8 +1,5 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-
-
 import {
   useEffect,
   useState,
@@ -18,6 +15,9 @@ import {
   getPatientReports,
   deleteReport,
 } from "../../services/medicalReportService";
+import BackButton from "../../components/common/BackButton";
+
+
 
 function PatientProfile() {
     const navigate = useNavigate();
@@ -218,26 +218,13 @@ function PatientProfile() {
 
       <div className="bg-white rounded-3xl shadow-md p-8">
 
-        <button
-            onClick={() => navigate(-1)}
-            className="
-                flex
-                items-center
-                gap-2
-                mb-6
-                text-[#8c3b24]
-                font-semibold
-                hover:text-[#71301d]
-                transition
-            "
-            >
-            <ArrowLeft size={20} />
-            Go Back
-            </button>
+        <BackButton />
 
         <h1 className="text-4xl font-bold text-[#8c3b24]">
           My Profile
         </h1>
+
+        
 
         <p className="text-gray-500 mt-2">
           Manage your healthcare profile

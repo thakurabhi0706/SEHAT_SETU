@@ -153,8 +153,8 @@ const COLORS = [
           <SidebarItem
             icon={Building2}
             label="Pharmacies"
-            active={false}
-            onClick={() => {}}
+            active={location.pathname === "/pharmacy-locator"}
+            onClick={() => navigate("/pharmacy-locator")}
           />
 
           <SidebarItem

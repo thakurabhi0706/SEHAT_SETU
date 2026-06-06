@@ -10,6 +10,17 @@ import {
   Home,
 } from "lucide-react";
 
+
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  getDoctorDashboard,
+} from "../../services/doctorDashboardService";
+
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -23,6 +34,32 @@ function DoctorDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [dashboardData,
+  setDashboardData] =
+  useState(null);
+
+  useEffect(() => {
+
+  const fetchDashboard =
+    async () => {
+
+      try {
+
+        const data =
+          await getDoctorDashboard();
+
+        setDashboardData(data);
+
+      } catch (error) {
+        console.log(error);
+      }
+
+    };
+
+  fetchDashboard();
+
+}, []);
   
   const handleLogout = () => {
       dispatch(logout());
@@ -31,25 +68,31 @@ function DoctorDashboard() {
   const stats = [
     {
       title: "Patients",
-      value: "124",
+      value:
+        dashboardData
+          ?.totalPatients || 0,
       icon: Users,
     },
     {
       title: "Appointments",
-      value: "38",
+      value:
+        dashboardData
+          ?.totalAppointments || 0,
       icon: CalendarDays,
     },
     {
       title: "Earnings",
-      value: "₹24,500",
+      value: `₹${
+        dashboardData
+          ?.totalEarnings || 0
+      }`,
       icon: IndianRupee,
     },
     {
       title: "Rating",
-      value: "4.8",
+      value: "5.0",
       icon: Star,
     },
-    
   ];
 
   return (
@@ -245,32 +288,62 @@ function DoctorDashboard() {
 
             <div className="mt-6 space-y-4">
               
-              {[1, 2, 3].map((item) => (
+              {
+                dashboardData
+                ?.upcomingAppointments
+                ?.map((appointment) => (
+
                 <div
-                  key={item}
-                  className="flex items-center justify-between bg-[#fcfaf8] border border-[#efe5db] rounded-2xl p-5"
+                  key={appointment._id}
+                  className="
+                  flex items-center
+                  justify-between
+                  bg-[#fcfaf8]
+                  border
+                  border-[#efe5db]
+                  rounded-2xl
+                  p-5"
                 >
+
                   <div>
+
                     <h3 className="font-semibold text-lg">
-                      Patient Name
+                      {
+                      appointment.patient
+                        ?.fullName
+                      }
                     </h3>
 
                     <p className="text-gray-500 mt-1">
-                      Video Consultation
+                      {
+                      appointment.consultationType
+                      }
                     </p>
+
                   </div>
 
                   <div className="text-right">
+
                     <p className="font-semibold">
-                      10:30 AM
+                      {
+                      appointment.appointmentTime
+                      }
                     </p>
 
                     <p className="text-gray-500">
-                      Today
+                      {
+                      new Date(
+                        appointment.appointmentDate
+                      ).toLocaleDateString()
+                      }
                     </p>
+
                   </div>
+
                 </div>
-              ))}
+
+                ))
+                }
             </div>
           </div>
 

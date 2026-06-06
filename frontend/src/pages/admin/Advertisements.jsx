@@ -8,6 +8,7 @@ import {
 } from "../../services/advertisementService";
 
 import {uploadFile} from "../../services/uploadService";
+import BackButton from "../../components/common/BackButton";
 
 function Advertisements() {
 
@@ -83,6 +84,8 @@ function Advertisements() {
       <h1 className="text-4xl font-bold mb-10">
         Advertisements
       </h1>
+
+      <BackButton />
 
       {/* CREATE FORM */}
 

@@ -4,6 +4,14 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  getPatientDashboard,
+} from "../../services/patientDashboardService";
 
 import {
   LayoutDashboard,
@@ -38,10 +46,33 @@ function Dashboard() {
   const { user } = useSelector(
     (state) => state.auth
   );
+  const [stats, setStats] =
+  useState({
+    appointments: 0,
+    reports: 0,
+    prescriptions: 0,
+    doctorsConsulted: 0,
+  });
+
+  useEffect(() => {
+  fetchDashboard();
+}, []);
+
+const fetchDashboard = async () => {
+  try {
+
+    const data =
+      await getPatientDashboard();
+
+    setStats(data);
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const patientName =
     user?.fullName || "Patient";
-
   return (
     <div className="min-h-screen bg-[#f7f4ef] flex">
 
@@ -200,7 +231,7 @@ function Dashboard() {
             </h3>
 
             <p className="text-4xl font-bold mt-2">
-              5
+              {stats.appointments}
             </p>
           </div>
 
@@ -210,7 +241,7 @@ function Dashboard() {
             </h3>
 
             <p className="text-4xl font-bold mt-2">
-              12
+              {stats.reports}
             </p>
           </div>
 
@@ -220,7 +251,7 @@ function Dashboard() {
             </h3>
 
             <p className="text-4xl font-bold mt-2">
-              4
+              {stats.prescriptions}
             </p>
           </div>
 
@@ -230,7 +261,7 @@ function Dashboard() {
             </h3>
 
             <p className="text-4xl font-bold mt-2">
-              3
+              {stats.doctorsConsulted}
             </p>
           </div>
 

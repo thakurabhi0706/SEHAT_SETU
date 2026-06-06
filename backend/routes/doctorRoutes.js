@@ -16,6 +16,16 @@ const {
   getDoctorById,
 } = require("../controllers/doctor/doctorProfileController");
 
+
+const {
+  getDoctorDashboard,
+  getDoctorPatients,
+  getDoctorEarnings,
+} = require(
+  "../controllers/doctor/doctorDashboardController"
+);
+
+
 const { protect, doctorOnly } = require("../middleware/authMiddleware");
 
 
@@ -33,7 +43,33 @@ router.put(
 );
 
 
+
+
 router.get("/", getAllApprovedDoctors);
 router.get("/specialization/:specialization", getDoctorsBySpecialization);
+
+
+router.get(
+  "/dashboard",
+  protect,
+  doctorOnly,
+  getDoctorDashboard
+);
+
+router.get(
+  "/patients",
+  protect,
+  doctorOnly,
+  getDoctorPatients
+);
+
+router.get(
+  "/earnings",
+  protect,
+  doctorOnly,
+  getDoctorEarnings
+);
+
+
 router.get("/:id", getDoctorById);
 module.exports = router;
