@@ -167,15 +167,16 @@ const COLORS = [
           <SidebarItem
             icon={CalendarDays}
             label="Appointments"
-            active={false}
-            onClick={() => {}}
+            active={location.pathname === "/admin/appointments"}
+            onClick={() => navigate("/admin/appointments")}
           />
 
           <SidebarItem
             icon={Settings}
             label="Settings"
-            active={false}
-            onClick={() => {}}
+            active={location.pathname === "/admin/settings"}
+            onClick={() => navigate("/admin/settings")}
+          
           />
 
         </nav>

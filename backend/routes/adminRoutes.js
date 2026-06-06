@@ -30,6 +30,18 @@ const {
   adminOnly,
 } = require("../middleware/authMiddleware");
 
+const {
+  getAllAppointments,
+} = require(
+  "../controllers/admin/adminAppointmentController"
+);
+
+const {
+  getAdminSettings,
+} = require(
+  "../controllers/admin/adminSettingsController"
+);
+
 router.post("/login", loginAdmin);
 
 router.get(
@@ -37,6 +49,20 @@ router.get(
   protect,
   adminOnly,
   getPendingDoctors
+);
+
+router.get(
+  "/appointments",
+  protect,
+  adminOnly,
+  getAllAppointments
+);
+
+router.get(
+  "/settings",
+  protect,
+  adminOnly,
+  getAdminSettings
 );
 
 router.put(

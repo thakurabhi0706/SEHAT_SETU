@@ -39,10 +39,11 @@ import DoctorReports from "../pages/doctor/DoctorReports";
 
 /* ADMIN */
 import AdminDashboard from "../pages/admin/Dashboard";
-import AdsManagement from "../pages/admin/AdsManagement";
+import AdminAppointments from "../pages/admin/AdminAppointments";
 import PendingDoctors from "../pages/admin/PendingDoctors";
 import AdminProtectedRoute from "../components/common/AdminProtectedRoute";
 import Advertisements from "../pages/admin/Advertisements";
+import AdminSettings from "../pages/admin/AdminSettings";
 
 
 function AppRoutes() {
@@ -190,6 +191,11 @@ function AppRoutes() {
         />
 
         <Route
+          path="/admin/settings"
+          element={<AdminSettings />}
+        />
+
+        <Route
           path="/doctor/dashboard"
           element={
             <DoctorProtectedRoute>
@@ -222,14 +228,10 @@ function AppRoutes() {
           }
         />
 
-        <Route
-          path="/admin/ads"
-          element={
-            <RoleProtectedRoute allowedRole="admin">
-              <AdsManagement />
-            </RoleProtectedRoute>
-          }
-        />
+       <Route
+        path="/admin/appointments"
+        element={<AdminAppointments />}
+      />
 
         <Route
           path="/admin/advertisements"

@@ -1,5 +1,6 @@
+// AdvertisementCarousel.jsx
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { getActiveAdvertisements } from "../../services/advertisementService";
 
 function AdvertisementCarousel() {
@@ -20,26 +21,47 @@ function AdvertisementCarousel() {
       console.error(error);
     }
   };
-
+  
   useEffect(() => {
     if (!ads.length) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % ads.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [ads]);
 
-  return (
-    <div className="relative w-full py-10 mt-6 flex flex-col items-center justify-center overflow-hidden">
+  if (!ads.length) return null;
 
-      {/* Ambient background glow */}
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + ads.length) % ads.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % ads.length);
+  };
+
+  return (
+    <div className="relative w-full py-12 mt-8 flex flex-col items-center justify-center overflow-hidden">
+      {/* Animated background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-rose-400/20 blur-[100px]" />
-        <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-orange-300/10 blur-[80px]" />
-        <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-red-500/10 blur-[80px]" />
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gradient-to-br from-rose-400/25 via-orange-300/15 to-transparent blur-[120px]"
+        />
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="absolute left-1/4 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-orange-300/10 to-transparent blur-[100px]"
+        />
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-[100px]"
+        />
       </div>
 
-      {/* Cards */}
+      {/* Cards Container */}
       <div className="relative w-full h-[520px] flex items-center justify-center">
         {ads.map((ad, index) => {
           const offset = index - currentIndex;
@@ -55,9 +77,10 @@ function AdvertisementCarousel() {
           const isCenter = adjustedOffset === 0;
           const isNeighbor = Math.abs(adjustedOffset) === 1;
 
-          const scale = isCenter ? 1.06 : isNeighbor ? 0.88 : 0.74;
-          const opacity = isCenter ? 1 : isNeighbor ? 0.72 : 0.4;
-          const zIndex = isCenter ? 20 : isNeighbor ? 5 : 1;
+          const scale = isCenter ? 1.08 : isNeighbor ? 0.85 : 0.7;
+          const opacity = isCenter ? 1 : isNeighbor ? 0.65 : 0.35;
+          const zIndex = isCenter ? 20 : isNeighbor ? 10 : 5;
+          const blur = isCenter ? 0 : isNeighbor ? 0.5 : 2;
 
           return (
             <motion.a
@@ -67,58 +90,66 @@ function AdvertisementCarousel() {
               rel="noreferrer"
               className="absolute top-0 rounded-3xl overflow-hidden cursor-pointer group"
               animate={{
-                x: adjustedOffset * 310,
+                x: adjustedOffset * 320,
                 scale,
                 opacity,
-                rotateY: adjustedOffset === 0 ? 0 : adjustedOffset * 12,
+                rotateY: adjustedOffset === 0 ? 0 : adjustedOffset * 8,
+                z: zIndex,
               }}
               transition={{
                 type: "spring",
-                stiffness: 110,
-                damping: 28,
-                mass: 0.9,
+                stiffness: 60,
+                damping: 30,
+                mass: 1.3,
+                restDelta: 0.0001,
               }}
               style={{
                 zIndex,
-                filter: isCenter ? "blur(0px)" : "blur(1.5px)",
+                filter: `blur(${blur}px)`,
                 boxShadow: isCenter
-                  ? "0 0 0 1px rgba(255,255,255,0.15), 0 30px 80px -10px rgba(0,0,0,0.5), 0 0 40px rgba(220,80,60,0.25)"
-                  : "0 10px 40px rgba(0,0,0,0.3)",
+                  ? "0 0 0 1px rgba(255,255,255,0.2), 0 40px 100px -15px rgba(0,0,0,0.6), 0 0 50px rgba(220,80,60,0.3)"
+                  : isNeighbor
+                  ? "0 20px 60px rgba(0,0,0,0.4)"
+                  : "0 10px 30px rgba(0,0,0,0.25)",
               }}
             >
               {/* Image */}
               <img
                 src={ad.imageUrl}
                 alt={ad.title}
-                className="w-[460px] h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-[460px] h-[500px] object-cover transition-transform duration-1000 group-hover:scale-110"
               />
 
-              {/* Multi-stop gradient overlay — richer depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 via-40% to-transparent" />
+              {/* Multi-stop gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 via-50% to-black/10" />
 
-              {/* Subtle top vignette */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent opacity-60" />
+              {/* Top vignette */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/25 to-transparent opacity-50" />
 
               {/* Glassy accent bar at bottom */}
               {isCenter && (
                 <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-400 via-orange-400 to-red-500 origin-left"
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
+                  className="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-400 via-orange-400 to-red-500 origin-left shadow-lg shadow-rose-400/50"
                 />
               )}
 
-              {/* "LIVE" / badge pill — shown only on center card */}
+              {/* Featured badge */}
               {isCenter && (
                 <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="absolute top-4 left-4 flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1"
+                  initial={{ opacity: 0, y: -12, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                  className="absolute top-5 left-5 flex items-center gap-2 bg-white/12 backdrop-blur-xl border border-white/25 rounded-full px-4 py-2 shadow-xl"
                 >
-                  <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
-                  <span className="text-xs font-semibold text-white tracking-wide uppercase">
+                  <motion.span
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-rose-400 to-orange-400 shadow-lg shadow-rose-400/60"
+                  />
+                  <span className="text-xs font-bold text-white tracking-wide uppercase">
                     Featured
                   </span>
                 </motion.div>
@@ -126,27 +157,44 @@ function AdvertisementCarousel() {
 
               {/* Text content */}
               <motion.div
-                className="absolute bottom-0 p-6 text-white"
-                animate={{ y: isCenter ? 0 : 6, opacity: isCenter ? 1 : 0.8 }}
-                transition={{ duration: 0.4 }}
+                className="absolute bottom-0 left-0 right-0 p-7 text-white"
+                animate={{ y: isCenter ? 0 : 8, opacity: isCenter ? 1 : 0.75 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <h3 className="text-3xl font-extrabold drop-shadow-lg leading-tight tracking-tight">
+                <motion.h3
+                  initial={false}
+                  animate={{ letterSpacing: isCenter ? "0px" : "0.5px" }}
+                  className="text-3xl font-black drop-shadow-xl leading-tight tracking-tight"
+                >
                   {ad.title}
-                </h3>
-                <p className="mt-2 text-sm text-gray-300 drop-shadow-md leading-relaxed line-clamp-2">
-                  {ad.description}
-                </p>
+                </motion.h3>
 
-                {/* CTA chip — only center card */}
+                <motion.p
+                  initial={false}
+                  animate={{ opacity: isCenter ? 1 : 0.85 }}
+                  className="mt-2.5 text-sm text-gray-200 drop-shadow-md leading-relaxed line-clamp-2"
+                >
+                  {ad.description}
+                </motion.p>
+
+                {/* CTA button */}
                 {isCenter && (
-                  <motion.span
-                    initial={{ opacity: 0, y: 6 }}
+                  <motion.button
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                    className="inline-block mt-4 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-xs font-semibold text-white tracking-wide hover:bg-white/25 transition-colors"
+                    transition={{ delay: 0.35, duration: 0.6 }}
+                    className="group/btn mt-5 px-5 py-2 rounded-full bg-gradient-to-r from-rose-500/90 to-orange-500/90 backdrop-blur-sm border border-white/30 text-xs font-bold text-white tracking-wide hover:from-rose-500 hover:to-orange-500 transition-all duration-300 shadow-lg shadow-rose-500/40 hover:shadow-rose-500/60"
                   >
-                    Learn More →
-                  </motion.span>
+                    <span className="flex items-center gap-1.5">
+                      Learn More
+                      <motion.span
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        →
+                      </motion.span>
+                    </span>
+                  </motion.button>
                 )}
               </motion.div>
             </motion.a>
@@ -154,16 +202,45 @@ function AdvertisementCarousel() {
         })}
       </div>
 
+      {/* Navigation Arrows */}
+      {ads.length > 1 && (
+        <>
+          <motion.button
+            onClick={goToPrevious}
+            whileHover={{ scale: 1.15, x: -4 }}
+            whileTap={{ scale: 0.9 }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-gradient-to-br from-rose-500 to-orange-500 text-white hover:shadow-xl hover:shadow-rose-500/50 transition-all duration-300 group backdrop-blur-sm border border-white/20"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+          </motion.button>
+
+          <motion.button
+            onClick={goToNext}
+            whileHover={{ scale: 1.15, x: 4 }}
+            whileTap={{ scale: 0.9 }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-gradient-to-br from-rose-500 to-orange-500 text-white hover:shadow-xl hover:shadow-rose-500/50 transition-all duration-300 group backdrop-blur-sm border border-white/20"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </motion.button>
+        </>
+      )}
+
       {/* Dot indicators */}
-      <div className="relative z-30 flex items-center gap-2 mt-6">
+      <div className="relative z-30 flex items-center gap-2.5 mt-8">
         {ads.map((_, i) => (
-          <button
+          <motion.button
             key={i}
             onClick={() => setCurrentIndex(i)}
-            className={`transition-all duration-500 rounded-full ${
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            className={`rounded-full transition-all duration-500 ${
               i === currentIndex
-                ? "w-8 h-2.5 bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.7)]"
-                : "w-2.5 h-2.5 bg-white/30 hover:bg-white/60"
+                ? "w-9 h-3 bg-gradient-to-r from-rose-500 to-orange-500 shadow-lg shadow-rose-500/60"
+                : "w-3 h-3 bg-white/30 hover:bg-white/60 border border-white/10"
             }`}
           />
         ))}
