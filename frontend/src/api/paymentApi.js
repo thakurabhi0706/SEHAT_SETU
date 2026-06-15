@@ -1,23 +1,26 @@
 import axios from "axios";
 
-const API_URL =
-  "http://localhost:5000/api/payment";
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export const createPaymentOrder = async (
   appointmentId
 ) => {
-
-  const token =
-    localStorage.getItem("token");
-
-  const response = await axios.post(
-    `${API_URL}/create-order`,
-    { appointmentId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await api.post(
+    `/payment/create-order`,
+    { appointmentId }
   );
 
   return response.data;
@@ -26,18 +29,9 @@ export const createPaymentOrder = async (
 export const verifyPayment = async (
   paymentData
 ) => {
-
-  const token =
-    localStorage.getItem("token");
-
-  const response = await axios.post(
-    `${API_URL}/verify`,
-    paymentData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await api.post(
+    `/payment/verify`,
+    paymentData
   );
 
   return response.data;

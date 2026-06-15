@@ -7,10 +7,6 @@ function AdvertisementCarousel() {
   const [ads, setAds] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    fetchAds();
-  }, []);
-
   const fetchAds = async () => {
     try {
       const data = await getActiveAdvertisements();
@@ -21,6 +17,10 @@ function AdvertisementCarousel() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchAds();
+  }, []);
 
   useEffect(() => {
     if (!ads.length) return;

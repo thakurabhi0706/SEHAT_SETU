@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  "http://localhost:5000/api/doctor";
+  `${import.meta.env.VITE_API_BASE_URL}/doctor`;
 
 export const getAllDoctors = async () => {
   const response =

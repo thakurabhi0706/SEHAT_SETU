@@ -126,14 +126,6 @@ function AppRoutes() {
         
 
         {/* DOCTOR */}
-        {/* <Route
-          path="/doctor/dashboard"
-          element={
-            <RoleProtectedRoute allowedRole="doctor">
-              <DoctorDashboard />
-            </RoleProtectedRoute>
-          }
-        /> */}
         <Route
           path="/doctor/reports/:patientId"
           element={<DoctorReports />}
@@ -192,7 +184,11 @@ function AppRoutes() {
 
         <Route
           path="/admin/settings"
-          element={<AdminSettings />}
+          element={
+            <AdminProtectedRoute>
+              <AdminSettings />
+            </AdminProtectedRoute>
+          }
         />
 
         <Route
@@ -230,7 +226,11 @@ function AppRoutes() {
 
        <Route
         path="/admin/appointments"
-        element={<AdminAppointments />}
+        element={
+          <AdminProtectedRoute>
+            <AdminAppointments />
+          </AdminProtectedRoute>
+        }
       />
 
         <Route

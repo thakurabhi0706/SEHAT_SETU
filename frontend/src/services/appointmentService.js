@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  "http://localhost:5000/api/appointments";
+  `${import.meta.env.VITE_API_BASE_URL}/appointments`;
 
 export const bookAppointment = async (
   appointmentData

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/doctor";
-
+const API_URL =
+  `${import.meta.env.VITE_API_BASE_URL}/doctor`;
 export const getDoctorProfile = async () => {
   const token = localStorage.getItem("token");
 
@@ -35,7 +35,7 @@ export const updateDoctorProfile = async (data) => {
 
 export const getDoctorById = async (id) => {
   const response = await axios.get(
-    `http://localhost:5000/api/doctor/${id}`
+    `${import.meta.env.VITE_API_BASE_URL}/doctor/${id}`
   );
 
   return response.data;
