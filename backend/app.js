@@ -17,7 +17,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://sehat-setu-r3jqpbm8n-rbjanil1973-4617s-projects.vercel.app",
-      "sehat-setu-kappa.vercel.app"
+      "https://sehat-setu-kappa.vercel.app"
     ],
     credentials: true,
   })
