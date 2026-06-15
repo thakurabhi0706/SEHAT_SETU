@@ -12,7 +12,16 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const advertisementRoutes = require("./routes/advertisementRoutes");
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://sehat-setu-r3jqpbm8n-rbjanil1973-4617s-projects.vercel.app",
+      "sehat-setu-kappa.vercel.app"
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/patient", patientRoutes);
@@ -22,7 +31,6 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
-// app.use("/api/reports", medicalReportRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/ads", advertisementRoutes);
 app.use(
